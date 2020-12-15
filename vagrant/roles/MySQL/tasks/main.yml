@@ -1,0 +1,48 @@
+---
+# tasks file for MySQL
+- name: Upgrade packages
+  apt:
+    name: "*"
+    state: latest
+- name: Installing Mysql service and depencies
+  apt:
+    pkg: "{{item}}"
+  loop:
+    - mysql-server
+    - mysql-client
+    
+- name: start and enable Mysql
+  service:
+    name: mysql
+    state: started
+    enabled: yes
+
+- name: Create  /etc/my.cnf
+  template:
+    src: ../templates/mysql.cnf.j2
+    dest: /etc/my.cnf
+    owner: ubuntu
+    group: ubuntu
+    mode: 0644
+
+- name: restart mysql
+  service:
+    name: mysql
+    state: restarted
+
+- name: creating mysql user
+  mysql_user:
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    name: "jorik"
+    password: "password123"
+    priv: "*.*:ALL"
+    host: "%"
+    state: present
+
+- name: create database
+  mysql_db:
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    name: jorikDB
+    state: present
+
+

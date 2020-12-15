@@ -1,0 +1,34 @@
+---
+# tasks file for webservers
+- name: install apache2
+  apt:
+    pkg: apache2
+    state: present
+
+- name: copy index file
+  copy: src=connect.php dest=/var/www/html/index.php
+
+- name: install php
+  apt:
+    pkg: php
+    state: present
+
+- name: install apache module php
+  apt:
+    pkg: libapache2-mod-php
+    state: present
+
+- name: install mysql php
+  apt:
+    pkg: php-mysql
+    state: present
+
+- name: delete index.html
+  file:
+    path: /var/www/html/index.html
+    state: absent
+
+- name: restart apache2
+  service:
+    name: apache2
+    state: restarted

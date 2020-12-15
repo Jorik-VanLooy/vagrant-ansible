@@ -1,0 +1,11 @@
+---
+- hosts: all
+  user: vagrant
+  become: yes
+  tasks:
+   - name: install apache2
+     apt: 
+       pkg: apache2
+       state: present
+   - name: copy index file
+     copy: src=/vagrant/index.html dest=/var/www/html/index.html

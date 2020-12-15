@@ -1,0 +1,5 @@
+---
+# vars file for webservers
+MYSQL: 192.168.56.103
+database_user: jorik
+database_password: paswoord123
